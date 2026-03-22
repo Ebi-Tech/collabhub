@@ -150,3 +150,51 @@ isDense: true,
 ),
 ),
 const SizedBox(width: 8),
+// Filter button
+Stack(
+clipBehavior: Clip.none,
+children: [
+OutlinedButton.icon(
+onPressed: onFilter,
+icon: const Icon(Icons.tune, size: 16),
+label: const Text('Filter'),
+style: OutlinedButton.styleFrom(
+padding:
+const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+foregroundColor: AppColors.onSurface(context),
+side: const BorderSide(color: AppColors.cardBorder),
+shape: RoundedRectangleBorder(
+borderRadius: BorderRadius.circular(AppRadius.xl),
+),
+textStyle: const TextStyle(fontSize: 14),
+),
+),
+if (activeFilterCount > 0)
+Positioned(
+top: -4,
+right: -4,
+child: Container(
+width: 20,
+height: 20,
+decoration: const BoxDecoration(
+color: AppColors.primary,
+shape: BoxShape.circle,
+),
+child: Center(
+child: Text(
+'$activeFilterCount',
+style: const TextStyle(
+color: Colors.white,
+fontSize: 11,
+fontWeight: FontWeight.w600),
+),
+),
+),
+),
+],
+),
+],
+),
+);
+}
+}
