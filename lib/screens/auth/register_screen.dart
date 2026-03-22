@@ -234,3 +234,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+  
+  Widget _field({
+    required BuildContext context,
+    required TextEditingController ctrl,
+    required String hint,
+    required IconData icon,
+    TextInputType keyboard = TextInputType.text,
+    bool obscure = false,
+    VoidCallback? toggleObscure,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: ctrl,
+      keyboardType: keyboard,
+      obscureText: obscure,
+      validator: validator,
+      style: TextStyle(fontSize: 16, color: AppColors.onSurface(context)),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: const TextStyle(color: AppColors.gray400),
+        prefixIcon: Icon(icon, size: 20, color: AppColors.gray400),
+        suffixIcon: toggleObscure != null
+            ? IconButton(
+                icon: Icon(
+                  obscure
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                  size: 20,
+                  color: AppColors.gray400,
+                ),
+                onPressed: toggleObscure,
+              )
+            : null,
+        filled: true,
+        fillColor: AppColors.input(context),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: const BorderSide(color: AppColors.red600),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: const BorderSide(color: AppColors.red600, width: 2),
+        ),
+      ),
+    );
+  }
+}
