@@ -198,3 +198,84 @@ fontWeight: FontWeight.w600),
 );
 }
 }
+
+// ── Body ──────────────────────────────────────────────────────────────────────
+
+class _Body extends StatelessWidget {
+final HomeState state;
+final void Function(BuildContext, ProjectModel) onEdit;
+
+const _Body({required this.state, required this.onEdit});
+
+@override
+Widget build(BuildContext context) {
+if (state is HomeLoading) {
+return const Center(
+child: CircularProgressIndicator(color: AppColors.primary),
+);
+}
+
+if (state is HomeError) {
+return Center(
+child: Text((state as HomeError).message,
+style: const TextStyle(color: AppColors.red600)),
+);
+}
+
+if (state is HomeLoaded) {
+final s = state as HomeLoaded;
+final currentUserId =
+(context.read<AuthBloc>().state is AuthAuthenticated)
+? (context.read<AuthBloc>().state as AuthAuthenticated).user.id
+    : '';
+
+if (s.displayedProjects.isEmpty) {
+return Center(
+child: Padding(
+padding: const EdgeInsets.all(32),
+child: Text(
+s.searchQuery.isNotEmpty || s.hasActiveFilters
+? 'No projects match your search.'
+    : 'No projects yet. Be the first to post!',
+textAlign: TextAlign.center,
+style: const TextStyle(fontSize: 14, color: AppColors.gray500),
+),
+),
+);
+}
+
+return ListView.separated(
+padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+itemCount: s.displayedProjects.length +
+(s.searchQuery.isNotEmpty || s.hasActiveFilters ? 1 : 0),
+separatorBuilder: (_, __) => const SizedBox(height: 16),
+itemBuilder: (context, index) {
+if (index == 0 &&
+(s.searchQuery.isNotEmpty || s.hasActiveFilters)) {
+return Padding(
+padding: const EdgeInsets.only(bottom: 4),
+child: Text(
+'Found ${s.displayedProjects.length} project(s)',
+style: TextStyle(fontSize: 14, color: AppColors.secondaryText(context)),
+),
+);
+}
+final offset =
+(s.searchQuery.isNotEmpty || s.hasActiveFilters) ? 1 : 0;
+final cardIndex = index - offset;
+final project = s.displayedProjects[cardIndex];
+return _AnimatedCard(
+index: cardIndex,
+child: ProjectCard(
+project: project,
+isOwner: project.authorId == currentUserId,
+onEdit: () => onEdit(context, project),
+),
+);
+},
+);
+}
+
+return const SizedBox.shrink();
+}
+}
