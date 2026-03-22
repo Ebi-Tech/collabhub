@@ -125,27 +125,32 @@ decoration: BoxDecoration(
 color: AppColors.input(context),
 borderRadius: BorderRadius.circular(AppRadius.xl),
 ),
-child: TextField(
-controller: controller,
-onChanged: onChanged,
-style: TextStyle(fontSize: 16, color: AppColors.onSurface(context)),
-decoration: InputDecoration(
-hintText: 'Search projects, skills, or people...',
-hintStyle: const TextStyle(
-fontSize: 16,
-color: AppColors.gray400,
-),
-prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.gray400),
-suffixIcon: controller.text.isNotEmpty
-? IconButton(
-icon: const Icon(Icons.close, size: 16, color: AppColors.gray400),
-onPressed: onClear,
-)
-    : null,
-border: InputBorder.none,
-contentPadding: const EdgeInsets.symmetric(vertical: 10),
-isDense: true,
-),
+child: ValueListenableBuilder<TextEditingValue>(
+  valueListenable: controller,
+  builder: (context, value, _) {
+    return TextField(
+      controller: controller,
+      onChanged: onChanged,
+      style: TextStyle(fontSize: 16, color: AppColors.onSurface(context)),
+      decoration: InputDecoration(
+        hintText: 'Search projects, skills, or people...',
+        hintStyle: const TextStyle(
+          fontSize: 16,
+          color: AppColors.gray400,
+        ),
+        prefixIcon: const Icon(Icons.search, size: 18, color: AppColors.gray400),
+        suffixIcon: value.text.isNotEmpty
+            ? IconButton(
+                icon: const Icon(Icons.close, size: 16, color: AppColors.gray400),
+                onPressed: onClear,
+              )
+            : null,
+        border: InputBorder.none,
+        contentPadding: const EdgeInsets.symmetric(vertical: 10),
+        isDense: true,
+      ),
+    );
+  },
 ),
 ),
 ),
