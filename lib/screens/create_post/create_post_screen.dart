@@ -50,7 +50,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     _skillCtrl.clear();
   }
 
-  Future<void> _post() async {
+  void _post() {
     if (!_formKey.currentState!.validate()) return;
 
     final authState = context.read<AuthBloc>().state;
@@ -75,34 +75,61 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
 
     context.read<HomeBloc>().add(HomeAddProject(project));
+    // UI waits — BlocListener below handles success / error
+  }
 
-    // Reset form
+  void _resetForm() {
+    final authState = context.read<AuthBloc>().state;
     _titleCtrl.clear();
     _descCtrl.clear();
     _skillCtrl.clear();
-    _emailCtrl.text = user.email;
+    if (authState is AuthAuthenticated) {
+      _emailCtrl.text = authState.user.email;
+    }
     setState(() {
       _skills.clear();
       _isPosting = false;
     });
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Project posted successfully!'),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: AppColors.green600,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppRadius.xl)),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return BlocListener<HomeBloc, HomeState>(
+      listenWhen: (prev, curr) {
+        if (curr is! HomeLoaded) return false;
+        final p = prev is HomeLoaded ? prev : null;
+        // Fire when a new project was just added or a transient error arrived
+        final addedChanged = curr.lastAddedId != null &&
+            curr.lastAddedId != p?.lastAddedId;
+        final errorChanged = curr.transientError != null &&
+            curr.transientError != p?.transientError;
+        return addedChanged || errorChanged;
+      },
+      listener: (context, state) {
+        if (state is! HomeLoaded) return;
+        if (state.lastAddedId != null) {
+          _resetForm();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: const Text('Project posted successfully!'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: AppColors.green600,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.xl)),
+            duration: const Duration(seconds: 2),
+          ));
+        } else if (state.transientError != null) {
+          setState(() => _isPosting = false);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(state.transientError!),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: AppColors.red600,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.xl)),
+            duration: const Duration(seconds: 4),
+          ));
+        }
+      },
+      child: SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 32),
       child: Center(
         child: ConstrainedBox(
@@ -225,7 +252,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ),
         ),
       ),
-    );
+    ),   // end SingleChildScrollView
+  );     // end BlocListener
   }
 
   Widget _label(String text) =>

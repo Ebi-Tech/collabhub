@@ -43,7 +43,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthError) {
+          if (state is AuthAuthenticated) {
+            // Pop back to root so _AuthGate shows MainScreen
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -54,7 +57,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             );
           }
-          // On success, navigator is handled by app.dart's BlocListener
         },
         builder: (context, state) {
           final isLoading = state is AuthLoading;
