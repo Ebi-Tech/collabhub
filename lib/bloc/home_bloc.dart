@@ -94,7 +94,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         userId: event.userId,
       );
       _replaceAndEmit(updated, emit);
-    } catch (_) {}
+    } catch (e) {
+      final s = state as HomeLoaded;
+      emit(s.copyWith(transientError: 'Vote failed: $e'));
+    }
   }
 
   Future<void> _onDownvote(HomeDownvoteProject event, Emitter<HomeState> emit) async {
@@ -106,7 +109,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         userId: event.userId,
       );
       _replaceAndEmit(updated, emit);
-    } catch (_) {}
+    } catch (e) {
+      final s = state as HomeLoaded;
+      emit(s.copyWith(transientError: 'Vote failed: $e'));
+    }
   }
 
   Future<void> _onToggleStatus(
@@ -125,43 +131,54 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       final updated = await _firestoreService.updateProject(toggled);
       _replaceAndEmit(updated, emit);
-    } catch (_) {}
+    } catch (e) {
+      emit(s.copyWith(transientError: 'Status update failed: $e'));
+    }
   }
 
   Future<void> _onDelete(HomeDeleteProject event, Emitter<HomeState> emit) async {
     if (state is! HomeLoaded) return;
+    final s = state as HomeLoaded;
     try {
       await _firestoreService.deleteProject(event.projectId);
-      final s = state as HomeLoaded;
       final updated = s.allProjects.where((p) => p.id != event.projectId).toList();
       emit(s.copyWith(
         allProjects: updated,
         displayedProjects:
             _applyFilters(updated, s.statusFilter, s.sortBy, s.searchQuery),
       ));
-    } catch (_) {}
+    } catch (e) {
+      emit(s.copyWith(transientError: 'Delete failed: $e'));
+    }
   }
 
   Future<void> _onUpdate(HomeUpdateProject event, Emitter<HomeState> emit) async {
     if (state is! HomeLoaded) return;
+    final s = state as HomeLoaded;
     try {
       final updated = await _firestoreService.updateProject(event.project);
       _replaceAndEmit(updated, emit);
-    } catch (_) {}
+    } catch (e) {
+      emit(s.copyWith(transientError: 'Update failed: $e'));
+    }
   }
 
   Future<void> _onAdd(HomeAddProject event, Emitter<HomeState> emit) async {
     if (state is! HomeLoaded) return;
+    final s = state as HomeLoaded;
     try {
       final created = await _firestoreService.createProject(event.project);
-      final s = state as HomeLoaded;
       final updated = [created, ...s.allProjects];
       emit(s.copyWith(
         allProjects: updated,
         displayedProjects:
             _applyFilters(updated, s.statusFilter, s.sortBy, s.searchQuery),
+        lastAddedId: created.id,
+        transientError: null,
       ));
-    } catch (_) {}
+    } catch (e) {
+      emit(s.copyWith(transientError: 'Failed to post project: $e'));
+    }
   }
 
   // ── helpers ───────────────────────────────────────────────────────────────
