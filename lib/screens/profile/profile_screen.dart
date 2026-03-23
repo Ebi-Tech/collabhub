@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:collabhub/bloc/auth_bloc.dart';
 import 'package:collabhub/bloc/home_bloc.dart';
 import 'package:collabhub/bloc/theme_cubit.dart';
@@ -180,7 +182,11 @@ class _ViewProfile extends StatelessWidget {
     return Column(
       children: [
         // Avatar
-        _BigAvatar(initials: user.initials, userId: user.id),
+        _BigAvatar(
+          initials: user.initials,
+          userId: user.id,
+          avatarUrl: user.avatarUrl,
+        ),
         const SizedBox(height: 12),
         Text(user.name, style: AppTextStyles.headingLg),
         const SizedBox(height: 2),
@@ -283,6 +289,7 @@ class _EditFormState extends State<_EditForm> {
   late final TextEditingController _bioCtrl;
   final TextEditingController _skillCtrl = TextEditingController();
   late List<String> _skills;
+  String? _avatarLocalPath; // set when user picks a new photo
 
   @override
   void initState() {
@@ -304,6 +311,15 @@ class _EditFormState extends State<_EditForm> {
     super.dispose();
   }
 
+  Future<void> _pickPhoto() async {
+    final picked = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+      maxWidth: 512,
+    );
+    if (picked != null) setState(() => _avatarLocalPath = picked.path);
+  }
+
   void _addSkill() {
     final s = _skillCtrl.text.trim();
     if (s.isEmpty || _skills.contains(s)) return;
@@ -318,6 +334,7 @@ class _EditFormState extends State<_EditForm> {
           role: _roleCtrl.text.trim(),
           bio: _bioCtrl.text.trim(),
           skills: List.from(_skills),
+          avatarLocalPath: _avatarLocalPath,
         ));
     widget.onSaved();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -341,6 +358,9 @@ class _EditFormState extends State<_EditForm> {
           _BigAvatar(
             initials: widget.user.initials,
             userId: widget.user.id,
+            avatarUrl: widget.user.avatarUrl,
+            localPath: _avatarLocalPath,
+            onTap: _pickPhoto,
           ),
           const SizedBox(height: 20),
           _fieldRow('Name', _nameCtrl, 'Your name',
@@ -509,7 +529,17 @@ class _EditFormState extends State<_EditForm> {
 class _BigAvatar extends StatelessWidget {
   final String initials;
   final String userId;
-  const _BigAvatar({required this.initials, required this.userId});
+  final String? avatarUrl;   // remote URL (Google photo / Storage)
+  final String? localPath;   // local file picked but not yet uploaded
+  final VoidCallback? onTap; // non-null = edit mode, shows camera icon
+
+  const _BigAvatar({
+    required this.initials,
+    required this.userId,
+    this.avatarUrl,
+    this.localPath,
+    this.onTap,
+  });
 
   Color _color() {
     final colors = [
@@ -526,16 +556,50 @@ class _BigAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
+    ImageProvider? image;
+    if (localPath != null) {
+      image = FileImage(File(localPath!));
+    } else if (avatarUrl != null) {
+      image = NetworkImage(avatarUrl!);
+    }
+
+    final avatar = CircleAvatar(
       radius: 48,
       backgroundColor: _color(),
-      child: Text(
-        initials,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
+      backgroundImage: image,
+      child: image == null
+          ? Text(
+              initials,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            )
+          : null,
+    );
+
+    if (onTap == null) return avatar;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          avatar,
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child: const Icon(Icons.camera_alt, size: 14, color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }

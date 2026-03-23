@@ -58,7 +58,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocConsumer<HomeBloc, HomeState>(
+      listenWhen: (prev, curr) =>
+          curr is HomeLoaded &&
+          curr.transientError != null &&
+          (prev is! HomeLoaded || prev.transientError != curr.transientError),
+      listener: (context, state) {
+        if (state is HomeLoaded && state.transientError != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(state.transientError!),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: AppColors.red600,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.xl)),
+            duration: const Duration(seconds: 4),
+          ));
+        }
+      },
       builder: (context, state) {
         return Column(
           children: [

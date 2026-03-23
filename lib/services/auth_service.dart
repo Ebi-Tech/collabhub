@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collabhub/models/user_model.dart';
@@ -64,21 +66,37 @@ class AuthService {
   }
 
   /// Persists updated profile fields to Firestore.
+  /// If [avatarLocalPath] is provided the image is uploaded to Firebase Storage
+  /// and the resulting download URL is saved as [avatarUrl].
   Future<UserModel> updateProfile({
     required UserModel user,
     required String name,
     required String role,
     required String bio,
     required List<String> skills,
+    String? avatarLocalPath,
   }) async {
+    String? avatarUrl = user.avatarUrl;
+
+    if (avatarLocalPath != null) {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('avatars')
+          .child('${user.id}.jpg');
+      await ref.putFile(File(avatarLocalPath));
+      avatarUrl = await ref.getDownloadURL();
+    }
+
     await _db.collection('users').doc(user.id).update({
       'name': name,
       'role': role,
       'bio': bio,
       'skills': skills,
+      if (avatarUrl != null) 'avatarUrl': avatarUrl,
     });
     await _auth.currentUser?.updateDisplayName(name);
-    return user.copyWith(name: name, role: role, bio: bio, skills: skills);
+    return user.copyWith(
+        name: name, role: role, bio: bio, skills: skills, avatarUrl: avatarUrl);
   }
 
   /// Signs out from Firebase and Google.
