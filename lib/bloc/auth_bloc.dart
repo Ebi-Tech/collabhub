@@ -91,6 +91,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         role: event.role,
         bio: event.bio,
         skills: event.skills,
+        avatarLocalPath: event.avatarLocalPath,
       );
       emit(AuthAuthenticated(updated));
     } catch (e) {
