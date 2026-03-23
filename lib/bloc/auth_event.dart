@@ -45,14 +45,16 @@ class AuthProfileUpdateRequested extends AuthEvent {
   final String role;
   final String bio;
   final List<String> skills;
+  final String? avatarLocalPath; // null = no change
   const AuthProfileUpdateRequested({
     required this.name,
     required this.role,
     required this.bio,
     required this.skills,
+    this.avatarLocalPath,
   });
   @override
-  List<Object?> get props => [name, role, bio, skills];
+  List<Object?> get props => [name, role, bio, skills, avatarLocalPath];
 }
 
 /// Sign out.

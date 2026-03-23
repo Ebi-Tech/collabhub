@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "33831460843",
+    "project_id": "collabhub-33a9d",
+    "storage_bucket": "collabhub-33a9d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33831460843:android:8d82faa9059f5ea53e03ae",
+        "android_client_info": {
+          "package_name": "com.team11.collabhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33831460843-op9t8vf4u6c56rjgeaadl64n4nikdnsj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team11.collabhub",
+            "certificate_hash": "84de80bea332eea871e78cbe6b7469ff62cb9230"
+          }
+        },
+        {
+          "client_id": "33831460843-anitd1rck7b5rb9ltcuhgm79ctt9kqj5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtFTjY62m_wEv5Lmt6nyqTHVyhWdT_DyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33831460843-anitd1rck7b5rb9ltcuhgm79ctt9kqj5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "33831460843-uv22j9hqpe6elbe9iptijdq1rjghh7t8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.team11.collabhub"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
