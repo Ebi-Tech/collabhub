@@ -26,13 +26,26 @@ class HomeLoaded extends HomeState {
   /// 'recent' | 'upvoted' | 'downvoted'
   final String sortBy;
 
+  /// Set to the Firestore-assigned ID after a successful createProject call.
+  /// BlocListeners watch this to show a success snackbar.
+  final String? lastAddedId;
+
+  /// Non-destructive error from a write operation (create/update/delete/vote).
+  /// Does not replace the loaded state — shown as a snackbar then cleared.
+  final String? transientError;
+
   const HomeLoaded({
     required this.allProjects,
     required this.displayedProjects,
     this.searchQuery = '',
     this.statusFilter = 'all',
     this.sortBy = 'recent',
+    this.lastAddedId,
+    this.transientError,
   });
+
+  // Sentinel lets copyWith explicitly clear nullable fields.
+  static const _unset = Object();
 
   HomeLoaded copyWith({
     List<ProjectModel>? allProjects,
@@ -40,6 +53,8 @@ class HomeLoaded extends HomeState {
     String? searchQuery,
     String? statusFilter,
     String? sortBy,
+    Object? lastAddedId = _unset,
+    Object? transientError = _unset,
   }) {
     return HomeLoaded(
       allProjects: allProjects ?? this.allProjects,
@@ -47,6 +62,11 @@ class HomeLoaded extends HomeState {
       searchQuery: searchQuery ?? this.searchQuery,
       statusFilter: statusFilter ?? this.statusFilter,
       sortBy: sortBy ?? this.sortBy,
+      lastAddedId:
+          lastAddedId == _unset ? this.lastAddedId : lastAddedId as String?,
+      transientError: transientError == _unset
+          ? this.transientError
+          : transientError as String?,
     );
   }
 
@@ -54,8 +74,15 @@ class HomeLoaded extends HomeState {
       statusFilter != 'all' || sortBy != 'recent' || searchQuery.isNotEmpty;
 
   @override
-  List<Object?> get props =>
-      [allProjects, displayedProjects, searchQuery, statusFilter, sortBy];
+  List<Object?> get props => [
+        allProjects,
+        displayedProjects,
+        searchQuery,
+        statusFilter,
+        sortBy,
+        lastAddedId,
+        transientError,
+      ];
 }
 
 class HomeError extends HomeState {
