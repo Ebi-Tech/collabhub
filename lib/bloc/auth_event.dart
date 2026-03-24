@@ -61,3 +61,8 @@ class AuthProfileUpdateRequested extends AuthEvent {
 class AuthLogoutRequested extends AuthEvent {
   const AuthLogoutRequested();
 }
+
+/// Clears [AuthUnauthenticated.promptLoginAfterRegistration] after the UI shows it.
+class AuthPostRegistrationAcknowledged extends AuthEvent {
+  const AuthPostRegistrationAcknowledged();
+}

@@ -43,9 +43,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthAuthenticated) {
-            // Pop back to root so _AuthGate shows MainScreen
-            Navigator.of(context).popUntil((route) => route.isFirst);
+          // Register was pushed on top of Login; auth success rebuilds Login underneath
+          // but this route stays visible until we pop back to the root.
+          if (state is AuthUnauthenticated &&
+              state.promptLoginAfterRegistration) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!context.mounted) return;
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            });
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

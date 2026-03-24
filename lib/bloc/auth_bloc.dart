@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEmailRegisterRequested>(_onEmailRegister);
     on<AuthProfileUpdateRequested>(_onProfileUpdate);
     on<AuthLogoutRequested>(_onLogout);
+    on<AuthPostRegistrationAcknowledged>(_onPostRegistrationAcknowledged);
   }
 
   Future<void> _onCheckRequested(
@@ -67,14 +68,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(const AuthLoading());
     try {
-      final user = await _authService.registerWithEmail(
+      await _authService.registerWithEmail(
         name: event.name,
         email: event.email,
         password: event.password,
       );
-      emit(AuthAuthenticated(user));
+      // createUserWithEmailAndPassword signs the user in; sign out so they must log in explicitly.
+      await _authService.signOut();
+      emit(const AuthUnauthenticated(promptLoginAfterRegistration: true));
     } catch (e) {
       emit(AuthError(e.toString()));
+    }
+  }
+
+  void _onPostRegistrationAcknowledged(
+    AuthPostRegistrationAcknowledged event,
+    Emitter<AuthState> emit,
+  ) {
+    final s = state;
+    if (s is AuthUnauthenticated && s.promptLoginAfterRegistration) {
+      emit(const AuthUnauthenticated());
     }
   }
 
