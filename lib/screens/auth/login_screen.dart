@@ -21,6 +21,29 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
 
   @override
+  void initState() {
+    super.initState();
+    // Registration emits [AuthUnauthenticated] before this widget exists, so
+    // [BlocConsumer.listener] never runs for that emission — handle once here.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final state = context.read<AuthBloc>().state;
+      if (state is AuthUnauthenticated && state.promptLoginAfterRegistration) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Account created successfully'),
+            backgroundColor: AppColors.primary,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.xl)),
+          ),
+        );
+        context.read<AuthBloc>().add(const AuthPostRegistrationAcknowledged());
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _emailCtrl.dispose();
     _passwordCtrl.dispose();

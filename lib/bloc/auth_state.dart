@@ -27,7 +27,11 @@ class AuthAuthenticated extends AuthState {
 
 /// No signed-in user.
 class AuthUnauthenticated extends AuthState {
-  const AuthUnauthenticated();
+  /// When true, show a one-time hint on [LoginScreen] after email registration.
+  final bool promptLoginAfterRegistration;
+  const AuthUnauthenticated({this.promptLoginAfterRegistration = false});
+  @override
+  List<Object?> get props => [promptLoginAfterRegistration];
 }
 
 /// An error occurred (login failure, etc.).
