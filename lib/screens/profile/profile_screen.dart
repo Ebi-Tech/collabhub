@@ -650,196 +650,196 @@ class _MyPosts extends StatelessWidget {
   }
 }
 
-// class _PostItem extends StatelessWidget {
-//   final ProjectModel project;
-//   final VoidCallback onEdit;
+class _PostItem extends StatelessWidget {
+  final ProjectModel project;
+  final VoidCallback onEdit;
 
-//   const _PostItem({required this.project, required this.onEdit});
+  const _PostItem({required this.project, required this.onEdit});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.all(16),
-//       decoration: BoxDecoration(
-//         color: AppColors.surface(context),
-//         border: Border.all(color: AppColors.border(context)),
-//         borderRadius: BorderRadius.circular(AppRadius.xl),
-//         boxShadow: AppShadows.card,
-//       ),
-//       child: Row(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           // Content
-//           Expanded(
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(
-//                   project.title,
-//                   style: TextStyle(
-//                       fontSize: 16,
-//                       fontWeight: FontWeight.w600,
-//                       color: AppColors.onSurface(context)),
-//                 ),
-//                 const SizedBox(height: 4),
-//                 Text(
-//                   project.description,
-//                   style: TextStyle(
-//                       fontSize: 14, color: AppColors.secondaryText(context), height: 1.4),
-//                   maxLines: 2,
-//                   overflow: TextOverflow.ellipsis,
-//                 ),
-//                 const SizedBox(height: 8),
-//                 Wrap(
-//                   spacing: 6,
-//                   runSpacing: 4,
-//                   children: project.skills.map((s) => _tinyBadge(context, s)).toList(),
-//                 ),
-//                 const SizedBox(height: 8),
-//                 Row(
-//                   children: [
-//                     _statusBadge(context, project.isOpen),
-//                     const SizedBox(width: 12),
-//                     const Icon(Icons.arrow_upward,
-//                         size: 14, color: AppColors.gray500),
-//                     Text(' ${project.upvotes}',
-//                         style: const TextStyle(
-//                             fontSize: 12, color: AppColors.gray500)),
-//                     const SizedBox(width: 8),
-//                     const Icon(Icons.arrow_downward,
-//                         size: 14, color: AppColors.gray500),
-//                     Text(' ${project.downvotes}',
-//                         style: const TextStyle(
-//                             fontSize: 12, color: AppColors.gray500)),
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ),
-//           // Three-dot menu
-//           _PostMenu(project: project, onEdit: onEdit),
-//         ],
-//       ),
-//     );
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface(context),
+        border: Border.all(color: AppColors.border(context)),
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        boxShadow: AppShadows.card,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Content
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  project.title,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.onSurface(context)),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  project.description,
+                  style: TextStyle(
+                      fontSize: 14, color: AppColors.secondaryText(context), height: 1.4),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 4,
+                  children: project.skills.map((s) => _tinyBadge(context, s)).toList(),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _statusBadge(context, project.isOpen),
+                    const SizedBox(width: 12),
+                    const Icon(Icons.arrow_upward,
+                        size: 14, color: AppColors.gray500),
+                    Text(' ${project.upvotes}',
+                        style: const TextStyle(
+                            fontSize: 12, color: AppColors.gray500)),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.arrow_downward,
+                        size: 14, color: AppColors.gray500),
+                    Text(' ${project.downvotes}',
+                        style: const TextStyle(
+                            fontSize: 12, color: AppColors.gray500)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Three-dot menu
+          _PostMenu(project: project, onEdit: onEdit),
+        ],
+      ),
+    );
+  }
 
-//   Widget _tinyBadge(BuildContext context, String label) => Container(
-//         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-//         decoration: BoxDecoration(
-//           color: AppColors.badgeBg(context),
-//           borderRadius: BorderRadius.circular(AppRadius.xl),
-//         ),
-//         child: Text(label,
-//             style: TextStyle(fontSize: 12, color: AppColors.onSurface(context))),
-//       );
+  Widget _tinyBadge(BuildContext context, String label) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        decoration: BoxDecoration(
+          color: AppColors.badgeBg(context),
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+        ),
+        child: Text(label,
+            style: TextStyle(fontSize: 12, color: AppColors.onSurface(context))),
+      );
 
-//   Widget _statusBadge(BuildContext context, bool isOpen) => Container(
-//         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-//         decoration: BoxDecoration(
-//           color: isOpen ? AppColors.green100 : AppColors.gray100,
-//           borderRadius: BorderRadius.circular(999),
-//         ),
-//         child: Text(
-//           isOpen ? 'Open' : 'Closed',
-//           style: TextStyle(
-//             fontSize: 12,
-//             color: isOpen ? AppColors.green700 : AppColors.secondaryText(context),
-//             fontWeight: FontWeight.w500,
-//           ),
-//         ),
-//       );
-// }
+  Widget _statusBadge(BuildContext context, bool isOpen) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        decoration: BoxDecoration(
+          color: isOpen ? AppColors.green100 : AppColors.gray100,
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Text(
+          isOpen ? 'Open' : 'Closed',
+          style: TextStyle(
+            fontSize: 12,
+            color: isOpen ? AppColors.green700 : AppColors.secondaryText(context),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+}
 
-// // ── Three-dot menu for profile post items ─────────────────────────────────────
+// ── Three-dot menu for profile post items ─────────────────────────────────────
 
-// class _PostMenu extends StatelessWidget {
-//   final ProjectModel project;
-//   final VoidCallback onEdit;
+class _PostMenu extends StatelessWidget {
+  final ProjectModel project;
+  final VoidCallback onEdit;
 
-//   const _PostMenu({required this.project, required this.onEdit});
+  const _PostMenu({required this.project, required this.onEdit});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return PopupMenuButton<String>(
-//       icon: const Icon(Icons.more_vert, size: 20, color: AppColors.gray500),
-//       padding: const EdgeInsets.all(4),
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(AppRadius.xl),
-//         side: const BorderSide(color: AppColors.cardBorder),
-//       ),
-//       elevation: 4,
-//       onSelected: (value) => _handle(context, value),
-//       itemBuilder: (ctx) => [
-//         PopupMenuItem(
-//           value: 'edit',
-//           child: _item(Icons.edit_outlined, 'Edit Post', AppColors.onSurface(ctx)),
-//         ),
-//         PopupMenuItem(
-//           value: 'toggle',
-//           child: _item(
-//             project.isOpen
-//                 ? Icons.cancel_outlined
-//                 : Icons.check_circle_outline,
-//             project.isOpen ? 'Mark as Closed' : 'Mark as Open',
-//             AppColors.onSurface(ctx),
-//           ),
-//         ),
-//         PopupMenuItem(
-//           value: 'delete',
-//           child: _item(Icons.delete_outline, 'Delete Post', AppColors.red600),
-//         ),
-//       ],
-//     );
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_vert, size: 20, color: AppColors.gray500),
+      padding: const EdgeInsets.all(4),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        side: const BorderSide(color: AppColors.cardBorder),
+      ),
+      elevation: 4,
+      onSelected: (value) => _handle(context, value),
+      itemBuilder: (ctx) => [
+        PopupMenuItem(
+          value: 'edit',
+          child: _item(Icons.edit_outlined, 'Edit Post', AppColors.onSurface(ctx)),
+        ),
+        PopupMenuItem(
+          value: 'toggle',
+          child: _item(
+            project.isOpen
+                ? Icons.cancel_outlined
+                : Icons.check_circle_outline,
+            project.isOpen ? 'Mark as Closed' : 'Mark as Open',
+            AppColors.onSurface(ctx),
+          ),
+        ),
+        PopupMenuItem(
+          value: 'delete',
+          child: _item(Icons.delete_outline, 'Delete Post', AppColors.red600),
+        ),
+      ],
+    );
+  }
 
-//   Widget _item(IconData icon, String label, Color color) => Row(
-//         children: [
-//           Icon(icon, size: 16, color: color),
-//           const SizedBox(width: 8),
-//           Text(label, style: TextStyle(fontSize: 14, color: color)),
-//         ],
-//       );
+  Widget _item(IconData icon, String label, Color color) => Row(
+        children: [
+          Icon(icon, size: 16, color: color),
+          const SizedBox(width: 8),
+          Text(label, style: TextStyle(fontSize: 14, color: color)),
+        ],
+      );
 
-//   void _handle(BuildContext context, String value) {
-//     switch (value) {
-//       case 'edit':
-//         onEdit();
-//         break;
-//       case 'toggle':
-//         context.read<HomeBloc>().add(HomeToggleProjectStatus(project.id));
-//         break;
-//       case 'delete':
-//         showDialog(
-//           context: context,
-//           builder: (_) => AlertDialog(
-//             shape: RoundedRectangleBorder(
-//                 borderRadius: BorderRadius.circular(AppRadius.xl)),
-//             title: const Text('Delete Post',
-//                 style:
-//                     TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-//             content: Text(
-//               'Are you sure you want to delete this post? This cannot be undone.',
-//               style: TextStyle(fontSize: 14, color: AppColors.secondaryText(context)),
-//             ),
-//             actions: [
-//               TextButton(
-//                 onPressed: () => Navigator.pop(context),
-//                 child: const Text('Cancel'),
-//               ),
-//               TextButton(
-//                 onPressed: () {
-//                   Navigator.pop(context);
-//                   context
-//                       .read<HomeBloc>()
-//                       .add(HomeDeleteProject(project.id));
-//                 },
-//                 child: const Text('Delete',
-//                     style: TextStyle(color: AppColors.red600)),
-//               ),
-//             ],
-//           ),
-//         );
-//         break;
-//     }
-//   }
-// }
+  void _handle(BuildContext context, String value) {
+    switch (value) {
+      case 'edit':
+        onEdit();
+        break;
+      case 'toggle':
+        context.read<HomeBloc>().add(HomeToggleProjectStatus(project.id));
+        break;
+      case 'delete':
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.xl)),
+            title: const Text('Delete Post',
+                style:
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            content: Text(
+              'Are you sure you want to delete this post? This cannot be undone.',
+              style: TextStyle(fontSize: 14, color: AppColors.secondaryText(context)),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  context
+                      .read<HomeBloc>()
+                      .add(HomeDeleteProject(project.id));
+                },
+                child: const Text('Delete',
+                    style: TextStyle(color: AppColors.red600)),
+              ),
+            ],
+          ),
+        );
+        break;
+    }
+  }
+}
