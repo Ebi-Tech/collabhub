@@ -228,301 +228,301 @@ class _ViewProfile extends StatelessWidget {
     );
   }
 
-//   Widget _infoRow(BuildContext context, IconData icon, String text,
-//       {bool isLink = false}) {
-//     return Row(
-//       children: [
-//         Icon(icon, size: 16, color: AppColors.gray500),
-//         const SizedBox(width: 8),
-//         Text(
-//           text,
-//           style: TextStyle(
-//             fontSize: 14,
-//             color: isLink ? AppColors.primary : AppColors.onSurface(context),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
+  Widget _infoRow(BuildContext context, IconData icon, String text,
+      {bool isLink = false}) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: AppColors.gray500),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 14,
+            color: isLink ? AppColors.primary : AppColors.onSurface(context),
+          ),
+        ),
+      ],
+    );
+  }
 
-//   Widget _section(String label, Widget child) {
-//     return Align(
-//       alignment: Alignment.centerLeft,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(label,
-//               style: const TextStyle(
-//                   fontSize: 14,
-//                   fontWeight: FontWeight.w500,
-//                   color: AppColors.gray500)),
-//           const SizedBox(height: 6),
-//           child,
-//         ],
-//       ),
-//     );
-//   }
-// }
+  Widget _section(String label, Widget child) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label,
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.gray500)),
+          const SizedBox(height: 6),
+          child,
+        ],
+      ),
+    );
+  }
+}
 
-// // ── Edit mode ─────────────────────────────────────────────────────────────────
+// ── Edit mode ─────────────────────────────────────────────────────────────────
 
-// class _EditForm extends StatefulWidget {
-//   final UserModel user;
-//   final VoidCallback onSaved;
-//   final VoidCallback onCancel;
+class _EditForm extends StatefulWidget {
+  final UserModel user;
+  final VoidCallback onSaved;
+  final VoidCallback onCancel;
 
-//   const _EditForm({
-//     required this.user,
-//     required this.onSaved,
-//     required this.onCancel,
-//   });
+  const _EditForm({
+    required this.user,
+    required this.onSaved,
+    required this.onCancel,
+  });
 
-//   @override
-//   State<_EditForm> createState() => _EditFormState();
-// }
+  @override
+  State<_EditForm> createState() => _EditFormState();
+}
 
-// class _EditFormState extends State<_EditForm> {
-//   final _formKey = GlobalKey<FormState>();
-//   late final TextEditingController _nameCtrl;
-//   late final TextEditingController _roleCtrl;
-//   late final TextEditingController _emailCtrl;
-//   late final TextEditingController _bioCtrl;
-//   final TextEditingController _skillCtrl = TextEditingController();
-//   late List<String> _skills;
-//   String? _avatarLocalPath; // set when user picks a new photo
+class _EditFormState extends State<_EditForm> {
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _nameCtrl;
+  late final TextEditingController _roleCtrl;
+  late final TextEditingController _emailCtrl;
+  late final TextEditingController _bioCtrl;
+  final TextEditingController _skillCtrl = TextEditingController();
+  late List<String> _skills;
+  String? _avatarLocalPath; // set when user picks a new photo
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _nameCtrl = TextEditingController(text: widget.user.name);
-//     _roleCtrl = TextEditingController(text: widget.user.role);
-//     _emailCtrl = TextEditingController(text: widget.user.email);
-//     _bioCtrl = TextEditingController(text: widget.user.bio);
-//     _skills = List.from(widget.user.skills);
-//   }
+  @override
+  void initState() {
+    super.initState();
+    _nameCtrl = TextEditingController(text: widget.user.name);
+    _roleCtrl = TextEditingController(text: widget.user.role);
+    _emailCtrl = TextEditingController(text: widget.user.email);
+    _bioCtrl = TextEditingController(text: widget.user.bio);
+    _skills = List.from(widget.user.skills);
+  }
 
-//   @override
-//   void dispose() {
-//     _nameCtrl.dispose();
-//     _roleCtrl.dispose();
-//     _emailCtrl.dispose();
-//     _bioCtrl.dispose();
-//     _skillCtrl.dispose();
-//     super.dispose();
-//   }
+  @override
+  void dispose() {
+    _nameCtrl.dispose();
+    _roleCtrl.dispose();
+    _emailCtrl.dispose();
+    _bioCtrl.dispose();
+    _skillCtrl.dispose();
+    super.dispose();
+  }
 
-//   Future<void> _pickPhoto() async {
-//     final picked = await ImagePicker().pickImage(
-//       source: ImageSource.gallery,
-//       imageQuality: 80,
-//       maxWidth: 512,
-//     );
-//     if (picked != null) setState(() => _avatarLocalPath = picked.path);
-//   }
+  Future<void> _pickPhoto() async {
+    final picked = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+      maxWidth: 512,
+    );
+    if (picked != null) setState(() => _avatarLocalPath = picked.path);
+  }
 
-//   void _addSkill() {
-//     final s = _skillCtrl.text.trim();
-//     if (s.isEmpty || _skills.contains(s)) return;
-//     setState(() => _skills.add(s));
-//     _skillCtrl.clear();
-//   }
+  void _addSkill() {
+    final s = _skillCtrl.text.trim();
+    if (s.isEmpty || _skills.contains(s)) return;
+    setState(() => _skills.add(s));
+    _skillCtrl.clear();
+  }
 
-//   void _save() {
-//     if (!_formKey.currentState!.validate()) return;
-//     context.read<AuthBloc>().add(AuthProfileUpdateRequested(
-//           name: _nameCtrl.text.trim(),
-//           role: _roleCtrl.text.trim(),
-//           bio: _bioCtrl.text.trim(),
-//           skills: List.from(_skills),
-//           avatarLocalPath: _avatarLocalPath,
-//         ));
-//     widget.onSaved();
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(
-//         content: const Text('Profile updated!'),
-//         behavior: SnackBarBehavior.floating,
-//         backgroundColor: AppColors.green600,
-//         shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(AppRadius.xl)),
-//         duration: const Duration(seconds: 2),
-//       ),
-//     );
-//   }
+  void _save() {
+    if (!_formKey.currentState!.validate()) return;
+    context.read<AuthBloc>().add(AuthProfileUpdateRequested(
+          name: _nameCtrl.text.trim(),
+          role: _roleCtrl.text.trim(),
+          bio: _bioCtrl.text.trim(),
+          skills: List.from(_skills),
+          avatarLocalPath: _avatarLocalPath,
+        ));
+    widget.onSaved();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Profile updated!'),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.green600,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.xl)),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Form(
-//       key: _formKey,
-//       child: Column(
-//         children: [
-//           _BigAvatar(
-//             initials: widget.user.initials,
-//             userId: widget.user.id,
-//             avatarUrl: widget.user.avatarUrl,
-//             localPath: _avatarLocalPath,
-//             onTap: _pickPhoto,
-//           ),
-//           const SizedBox(height: 20),
-//           _fieldRow('Name', _nameCtrl, 'Your name',
-//               validator: (v) => Validators.required(v, field: 'Name')),
-//           const SizedBox(height: 14),
-//           _fieldRow('Role / Field of Study', _roleCtrl,
-//               'e.g., Computer Science Student'),
-//           const SizedBox(height: 14),
-//           _fieldRow('Email', _emailCtrl, 'your.email@university.edu',
-//               keyboard: TextInputType.emailAddress,
-//               validator: Validators.email),
-//           const SizedBox(height: 14),
-//           _fieldRow('Bio', _bioCtrl, 'Tell us about yourself...',
-//               maxLines: 4),
-//           const SizedBox(height: 14),
-//           const Align(
-//             alignment: Alignment.centerLeft,
-//             child: Text('Skills', style: AppTextStyles.labelBase),
-//           ),
-//           const SizedBox(height: 6),
-//           Row(
-//             children: [
-//               Expanded(
-//                 child: _rawInput(_skillCtrl, 'Add a skill',
-//                     onSubmitted: (_) => _addSkill()),
-//               ),
-//               const SizedBox(width: 8),
-//               GestureDetector(
-//                 onTap: _addSkill,
-//                 child: Container(
-//                   padding: const EdgeInsets.symmetric(
-//                       horizontal: 20, vertical: 10),
-//                   decoration: BoxDecoration(
-//                     color: AppColors.actionButton(context),
-//                     borderRadius: BorderRadius.circular(AppRadius.xl),
-//                   ),
-//                   child: const Text('Add',
-//                       style: TextStyle(
-//                           color: AppColors.white,
-//                           fontWeight: FontWeight.w600,
-//                           fontSize: 16)),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           if (_skills.isNotEmpty) ...[
-//             const SizedBox(height: 10),
-//             Wrap(
-//               spacing: 8,
-//               runSpacing: 6,
-//               children: _skills
-//                   .map((s) =>
-//                       SkillBadge(label: s, onRemove: () => setState(() => _skills.remove(s))))
-//                   .toList(),
-//             ),
-//           ],
-//           const SizedBox(height: 24),
-//           Row(
-//             children: [
-//               Expanded(
-//                 child: ElevatedButton.icon(
-//                   onPressed: _save,
-//                   icon: const Icon(Icons.check, size: 18),
-//                   label: const Text('Save'),
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: AppColors.actionButton(context),
-//                     foregroundColor: AppColors.white,
-//                     padding: const EdgeInsets.symmetric(vertical: 12),
-//                     elevation: 0,
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(AppRadius.xl)),
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(width: 12),
-//               Expanded(
-//                 child: OutlinedButton(
-//                   onPressed: widget.onCancel,
-//                   style: OutlinedButton.styleFrom(
-//                     padding: const EdgeInsets.symmetric(vertical: 12),
-//                     side: const BorderSide(color: AppColors.cardBorder),
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(AppRadius.xl)),
-//                     foregroundColor: AppColors.onSurface(context),
-//                   ),
-//                   child: const Text('Cancel'),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          _BigAvatar(
+            initials: widget.user.initials,
+            userId: widget.user.id,
+            avatarUrl: widget.user.avatarUrl,
+            localPath: _avatarLocalPath,
+            onTap: _pickPhoto,
+          ),
+          const SizedBox(height: 20),
+          _fieldRow('Name', _nameCtrl, 'Your name',
+              validator: (v) => Validators.required(v, field: 'Name')),
+          const SizedBox(height: 14),
+          _fieldRow('Role / Field of Study', _roleCtrl,
+              'e.g., Computer Science Student'),
+          const SizedBox(height: 14),
+          _fieldRow('Email', _emailCtrl, 'your.email@university.edu',
+              keyboard: TextInputType.emailAddress,
+              validator: Validators.email),
+          const SizedBox(height: 14),
+          _fieldRow('Bio', _bioCtrl, 'Tell us about yourself...',
+              maxLines: 4),
+          const SizedBox(height: 14),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text('Skills', style: AppTextStyles.labelBase),
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Expanded(
+                child: _rawInput(_skillCtrl, 'Add a skill',
+                    onSubmitted: (_) => _addSkill()),
+              ),
+              const SizedBox(width: 8),
+              GestureDetector(
+                onTap: _addSkill,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.actionButton(context),
+                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                  ),
+                  child: const Text('Add',
+                      style: TextStyle(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16)),
+                ),
+              ),
+            ],
+          ),
+          if (_skills.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: _skills
+                  .map((s) =>
+                      SkillBadge(label: s, onRemove: () => setState(() => _skills.remove(s))))
+                  .toList(),
+            ),
+          ],
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: _save,
+                  icon: const Icon(Icons.check, size: 18),
+                  label: const Text('Save'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.actionButton(context),
+                    foregroundColor: AppColors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.xl)),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: widget.onCancel,
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    side: const BorderSide(color: AppColors.cardBorder),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.xl)),
+                    foregroundColor: AppColors.onSurface(context),
+                  ),
+                  child: const Text('Cancel'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
-//   Widget _fieldRow(
-//     String label,
-//     TextEditingController ctrl,
-//     String hint, {
-//     int maxLines = 1,
-//     TextInputType keyboard = TextInputType.text,
-//     String? Function(String?)? validator,
-//   }) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text(label, style: AppTextStyles.labelBase),
-//         const SizedBox(height: 6),
-//         TextFormField(
-//           controller: ctrl,
-//           maxLines: maxLines,
-//           keyboardType: keyboard,
-//           validator: validator,
-//           style: TextStyle(fontSize: 16, color: AppColors.onSurface(context)),
-//           decoration: _dec(hint),
-//         ),
-//       ],
-//     );
-//   }
+  Widget _fieldRow(
+    String label,
+    TextEditingController ctrl,
+    String hint, {
+    int maxLines = 1,
+    TextInputType keyboard = TextInputType.text,
+    String? Function(String?)? validator,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: AppTextStyles.labelBase),
+        const SizedBox(height: 6),
+        TextFormField(
+          controller: ctrl,
+          maxLines: maxLines,
+          keyboardType: keyboard,
+          validator: validator,
+          style: TextStyle(fontSize: 16, color: AppColors.onSurface(context)),
+          decoration: _dec(hint),
+        ),
+      ],
+    );
+  }
 
-//   Widget _rawInput(
-//     TextEditingController ctrl,
-//     String hint, {
-//     void Function(String)? onSubmitted,
-//   }) {
-//     return TextField(
-//       controller: ctrl,
-//       onSubmitted: onSubmitted,
-//       style: TextStyle(fontSize: 16, color: AppColors.onSurface(context)),
-//       decoration: _dec(hint),
-//     );
-//   }
+  Widget _rawInput(
+    TextEditingController ctrl,
+    String hint, {
+    void Function(String)? onSubmitted,
+  }) {
+    return TextField(
+      controller: ctrl,
+      onSubmitted: onSubmitted,
+      style: TextStyle(fontSize: 16, color: AppColors.onSurface(context)),
+      decoration: _dec(hint),
+    );
+  }
 
-//   InputDecoration _dec(String hint) => InputDecoration(
-//         hintText: hint,
-//         hintStyle: const TextStyle(color: AppColors.gray400, fontSize: 16),
-//         filled: true,
-//         fillColor: AppColors.input(context),
-//         contentPadding:
-//             const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-//         border: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(AppRadius.xl),
-//           borderSide: BorderSide.none,
-//         ),
-//         enabledBorder: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(AppRadius.xl),
-//           borderSide: BorderSide.none,
-//         ),
-//         focusedBorder: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(AppRadius.xl),
-//           borderSide: const BorderSide(color: AppColors.primary, width: 2),
-//         ),
-//         errorBorder: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(AppRadius.xl),
-//           borderSide: const BorderSide(color: AppColors.red600),
-//         ),
-//         focusedErrorBorder: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(AppRadius.xl),
-//           borderSide: const BorderSide(color: AppColors.red600, width: 2),
-//         ),
-//       );
-// }
+  InputDecoration _dec(String hint) => InputDecoration(
+        hintText: hint,
+        hintStyle: const TextStyle(color: AppColors.gray400, fontSize: 16),
+        filled: true,
+        fillColor: AppColors.input(context),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: const BorderSide(color: AppColors.red600),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          borderSide: const BorderSide(color: AppColors.red600, width: 2),
+        ),
+      );
+}
 
 // // ── Big avatar ────────────────────────────────────────────────────────────────
 
