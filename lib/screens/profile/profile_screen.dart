@@ -171,62 +171,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-// // ── View mode ─────────────────────────────────────────────────────────────────
+// ── View mode ─────────────────────────────────────────────────────────────────
 
-// class _ViewProfile extends StatelessWidget {
-//   final UserModel user;
-//   const _ViewProfile({required this.user});
+class _ViewProfile extends StatelessWidget {
+  final UserModel user;
+  const _ViewProfile({required this.user});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         // Avatar
-//         _BigAvatar(
-//           initials: user.initials,
-//           userId: user.id,
-//           avatarUrl: user.avatarUrl,
-//         ),
-//         const SizedBox(height: 12),
-//         Text(user.name, style: AppTextStyles.headingLg),
-//         const SizedBox(height: 2),
-//         Text(
-//           user.role.isEmpty ? 'University Student' : user.role,
-//           style: AppTextStyles.bodySm,
-//         ),
-//         const SizedBox(height: 24),
-//         // Email
-//         _infoRow(context, Icons.email_outlined, user.email, isLink: true),
-//         const SizedBox(height: 20),
-//         // Bio
-//         _section(
-//           'Bio',
-//           user.bio.isEmpty
-//               ? const Text('No bio yet.',
-//                   style: TextStyle(fontSize: 14, color: AppColors.gray500))
-//               : Text(user.bio,
-//                   style: TextStyle(
-//                       fontSize: 16,
-//                       color: AppColors.onSurface(context),
-//                       height: 1.5)),
-//         ),
-//         const SizedBox(height: 20),
-//         // Skills
-//         _section(
-//           'Skills',
-//           user.skills.isEmpty
-//               ? const Text('No skills added yet.',
-//                   style: TextStyle(fontSize: 14, color: AppColors.gray500))
-//               : Wrap(
-//                   spacing: 8,
-//                   runSpacing: 6,
-//                   children:
-//                       user.skills.map((s) => SkillBadge(label: s)).toList(),
-//                 ),
-//         ),
-//       ],
-//     );
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Avatar
+        _BigAvatar(
+          initials: user.initials,
+          userId: user.id,
+          avatarUrl: user.avatarUrl,
+        ),
+        const SizedBox(height: 12),
+        Text(user.name, style: AppTextStyles.headingLg),
+        const SizedBox(height: 2),
+        Text(
+          user.role.isEmpty ? 'University Student' : user.role,
+          style: AppTextStyles.bodySm,
+        ),
+        const SizedBox(height: 24),
+        // Email
+        _infoRow(context, Icons.email_outlined, user.email, isLink: true),
+        const SizedBox(height: 20),
+        // Bio
+        _section(
+          'Bio',
+          user.bio.isEmpty
+              ? const Text('No bio yet.',
+                  style: TextStyle(fontSize: 14, color: AppColors.gray500))
+              : Text(user.bio,
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.onSurface(context),
+                      height: 1.5)),
+        ),
+        const SizedBox(height: 20),
+        // Skills
+        _section(
+          'Skills',
+          user.skills.isEmpty
+              ? const Text('No skills added yet.',
+                  style: TextStyle(fontSize: 14, color: AppColors.gray500))
+              : Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  children:
+                      user.skills.map((s) => SkillBadge(label: s)).toList(),
+                ),
+        ),
+      ],
+    );
+  }
 
 //   Widget _infoRow(BuildContext context, IconData icon, String text,
 //       {bool isLink = false}) {
