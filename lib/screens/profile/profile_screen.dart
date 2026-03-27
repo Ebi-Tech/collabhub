@@ -524,131 +524,131 @@ class _EditFormState extends State<_EditForm> {
       );
 }
 
-// // ── Big avatar ────────────────────────────────────────────────────────────────
+// ── Big avatar ────────────────────────────────────────────────────────────────
 
-// class _BigAvatar extends StatelessWidget {
-//   final String initials;
-//   final String userId;
-//   final String? avatarUrl;   // remote URL (Google photo / Storage)
-//   final String? localPath;   // local file picked but not yet uploaded
-//   final VoidCallback? onTap; // non-null = edit mode, shows camera icon
+class _BigAvatar extends StatelessWidget {
+  final String initials;
+  final String userId;
+  final String? avatarUrl;   // remote URL (Google photo / Storage)
+  final String? localPath;   // local file picked but not yet uploaded
+  final VoidCallback? onTap; // non-null = edit mode, shows camera icon
 
-//   const _BigAvatar({
-//     required this.initials,
-//     required this.userId,
-//     this.avatarUrl,
-//     this.localPath,
-//     this.onTap,
-//   });
+  const _BigAvatar({
+    required this.initials,
+    required this.userId,
+    this.avatarUrl,
+    this.localPath,
+    this.onTap,
+  });
 
-//   Color _color() {
-//     final colors = [
-//       const Color(0xFF6366F1),
-//       const Color(0xFF8B5CF6),
-//       const Color(0xFFEC4899),
-//       const Color(0xFF14B8A6),
-//       const Color(0xFFF59E0B),
-//       const Color(0xFF10B981),
-//       const Color(0xFF3B82F6),
-//     ];
-//     return colors[userId.hashCode.abs() % colors.length];
-//   }
+  Color _color() {
+    final colors = [
+      const Color(0xFF6366F1),
+      const Color(0xFF8B5CF6),
+      const Color(0xFFEC4899),
+      const Color(0xFF14B8A6),
+      const Color(0xFFF59E0B),
+      const Color(0xFF10B981),
+      const Color(0xFF3B82F6),
+    ];
+    return colors[userId.hashCode.abs() % colors.length];
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     ImageProvider? image;
-//     if (localPath != null) {
-//       image = FileImage(File(localPath!));
-//     } else if (avatarUrl != null) {
-//       image = NetworkImage(avatarUrl!);
-//     }
+  @override
+  Widget build(BuildContext context) {
+    ImageProvider? image;
+    if (localPath != null) {
+      image = FileImage(File(localPath!));
+    } else if (avatarUrl != null) {
+      image = NetworkImage(avatarUrl!);
+    }
 
-//     final avatar = CircleAvatar(
-//       radius: 48,
-//       backgroundColor: _color(),
-//       backgroundImage: image,
-//       child: image == null
-//           ? Text(
-//               initials,
-//               style: const TextStyle(
-//                 fontSize: 24,
-//                 fontWeight: FontWeight.w600,
-//                 color: Colors.white,
-//               ),
-//             )
-//           : null,
-//     );
+    final avatar = CircleAvatar(
+      radius: 48,
+      backgroundColor: _color(),
+      backgroundImage: image,
+      child: image == null
+          ? Text(
+              initials,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            )
+          : null,
+    );
 
-//     if (onTap == null) return avatar;
+    if (onTap == null) return avatar;
 
-//     return GestureDetector(
-//       onTap: onTap,
-//       child: Stack(
-//         children: [
-//           avatar,
-//           Positioned(
-//             bottom: 0,
-//             right: 0,
-//             child: Container(
-//               padding: const EdgeInsets.all(6),
-//               decoration: BoxDecoration(
-//                 color: AppColors.primary,
-//                 shape: BoxShape.circle,
-//                 border: Border.all(color: Colors.white, width: 2),
-//               ),
-//               child: const Icon(Icons.camera_alt, size: 14, color: Colors.white),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          avatar,
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child: const Icon(Icons.camera_alt, size: 14, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-// // ── My Posts ──────────────────────────────────────────────────────────────────
+// ── My Posts ──────────────────────────────────────────────────────────────────
 
-// class _MyPosts extends StatelessWidget {
-//   final String userId;
-//   const _MyPosts({required this.userId});
+class _MyPosts extends StatelessWidget {
+  final String userId;
+  const _MyPosts({required this.userId});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<HomeBloc, HomeState>(
-//       builder: (context, state) {
-//         if (state is! HomeLoaded) return const SizedBox.shrink();
-//         final myPosts = state.allProjects
-//             .where((p) => p.authorId == userId)
-//             .toList();
-//         if (myPosts.isEmpty) return const SizedBox.shrink();
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is! HomeLoaded) return const SizedBox.shrink();
+        final myPosts = state.allProjects
+            .where((p) => p.authorId == userId)
+            .toList();
+        if (myPosts.isEmpty) return const SizedBox.shrink();
 
-//         return Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const SizedBox(height: 32),
-//             Text(
-//               'My Posts (${myPosts.length})',
-//               style: AppTextStyles.headingXl,
-//             ),
-//             const SizedBox(height: 16),
-//             ...myPosts.map((p) => Padding(
-//                   padding: const EdgeInsets.only(bottom: 12),
-//                   child: _PostItem(
-//                     project: p,
-//                     onEdit: () => showDialog(
-//                       context: context,
-//                       builder: (_) => BlocProvider.value(
-//                         value: context.read<HomeBloc>(),
-//                         child: EditPostDialog(project: p),
-//                       ),
-//                     ),
-//                   ),
-//                 )),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 32),
+            Text(
+              'My Posts (${myPosts.length})',
+              style: AppTextStyles.headingXl,
+            ),
+            const SizedBox(height: 16),
+            ...myPosts.map((p) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _PostItem(
+                    project: p,
+                    onEdit: () => showDialog(
+                      context: context,
+                      builder: (_) => BlocProvider.value(
+                        value: context.read<HomeBloc>(),
+                        child: EditPostDialog(project: p),
+                      ),
+                    ),
+                  ),
+                )),
+          ],
+        );
+      },
+    );
+  }
+}
 
 // class _PostItem extends StatelessWidget {
 //   final ProjectModel project;
