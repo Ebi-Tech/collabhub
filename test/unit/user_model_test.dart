@@ -56,7 +56,7 @@ void main() {
     });
 
     test('fromMap uses defaults for missing optional fields', () {
-      final user = UserModel.fromMap('uid-x', {'name': 'Tom', 'email': 't@b.com'});
+      final user = UserModel.fromMap('uid-x', const {'name': 'Tom', 'email': 't@b.com'});
       expect(user.role, '');
       expect(user.bio, '');
       expect(user.skills, isEmpty);
@@ -64,7 +64,7 @@ void main() {
     });
 
     test('fromMap handles null skills list gracefully', () {
-      final user = UserModel.fromMap('uid-y', {
+      final user = UserModel.fromMap('uid-y', const {
         'name': 'Pat',
         'email': 'p@b.com',
         'skills': null,

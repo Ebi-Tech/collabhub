@@ -69,7 +69,7 @@ void main() {
     });
 
     test('missing fields fall back to safe defaults', () {
-      final p = ProjectModel.fromMap('proj-empty', {}, currentUserId: 'me');
+      final p = ProjectModel.fromMap('proj-empty', const {}, currentUserId: 'me');
       expect(p.title, '');
       expect(p.description, '');
       expect(p.skills, const <String>[]);
