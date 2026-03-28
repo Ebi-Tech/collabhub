@@ -81,12 +81,15 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         builder: (context, state) {
           final isLoading = state is AuthLoading;
+          final isDark = Theme.of(context).brightness == Brightness.dark;
           return Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [AppColors.blue50, AppColors.indigo100],
+                colors: isDark
+                    ? const [Color(0xFF13131A), Color(0xFF1C1C2E)]
+                    : const [AppColors.blue50, AppColors.indigo100],
               ),
             ),
             child: SafeArea(
@@ -259,8 +262,8 @@ class _GoogleSignInButton extends StatelessWidget {
       child: Container(
         height: 48,
         decoration: BoxDecoration(
-          color: AppColors.white,
-          border: Border.all(color: AppColors.gray300),
+          color: AppColors.surface(context),
+          border: Border.all(color: AppColors.border(context)),
           borderRadius: BorderRadius.circular(AppRadius.xl),
           boxShadow: AppShadows.sm,
         ),
