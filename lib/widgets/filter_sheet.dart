@@ -31,12 +31,13 @@ class _FilterSheetState extends State<FilterSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.78,
-      constraints: const BoxConstraints(maxWidth: 384),
-      height: double.infinity,
-      color: AppColors.surface(context),
-      child: SafeArea(
+    return SafeArea(
+      bottom: false,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.78,
+        constraints: const BoxConstraints(maxWidth: 384),
+        height: double.infinity,
+        color: AppColors.surface(context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
