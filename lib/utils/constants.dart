@@ -1,46 +1,40 @@
 import 'package:flutter/material.dart';
 
-// ── Colour palette (matches Figma spec exactly) ──────────────────────────────
-
 class AppColors {
   AppColors._();
 
-  // ── Theme-aware helpers (use these in widgets that support dark mode) ──────
+  // these helpers switch between light/dark values based on the current theme
 
-  /// Card / dialog / header surface colour.
+  // background for cards, dialogs, and the app header
   static Color surface(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFF1C1C2E)
           : white;
 
-  /// Primary text colour.
   static Color onSurface(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFFECEFF4)
           : foreground;
 
-  /// Subtle border colour.
   static Color border(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? const Color(0x1AFFFFFF) // rgba(255,255,255,0.1)
           : cardBorder;
 
-  /// Input / field background colour.
+  // background colour for text fields
   static Color input(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFF252535)
           : inputBg;
 
-  /// CTA button background (Post Project, Add, Save).
-  /// Black in light mode to match Figma; blue in dark mode so it's visible.
+  // black in light mode, blue in dark mode so it doesn't disappear
   static Color actionButton(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark ? primary : foreground;
 
-  /// Secondary / descriptive text — visible on both light and dark surfaces.
   static Color secondaryText(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark ? gray400 : gray600;
 
-  /// Skill-badge / chip background.
+  // background for skill chips
   static Color badgeBg(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFF2A2A3E)
@@ -85,8 +79,6 @@ class AppColors {
   static const Color googleRed = Color(0xFFEA4335);
 }
 
-// ── Radius ────────────────────────────────────────────────────────────────────
-
 class AppRadius {
   AppRadius._();
   static const double xs = 4;
@@ -97,13 +89,10 @@ class AppRadius {
   static const double xxxl = 16;
 }
 
-// ── Text styles ───────────────────────────────────────────────────────────────
-
 class AppTextStyles {
   AppTextStyles._();
 
-  // No explicit color on headings/labels — they inherit from Material3 theme,
-  // which provides the correct light/dark onSurface colour automatically.
+  // no colour set here — inherits from the Material3 theme so dark mode works automatically
 
   static const TextStyle heading2xl = TextStyle(
     fontSize: 24,
@@ -152,8 +141,6 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
   );
 }
-
-// ── Shadows ───────────────────────────────────────────────────────────────────
 
 class AppShadows {
   AppShadows._();

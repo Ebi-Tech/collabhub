@@ -109,8 +109,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// ── Search bar ────────────────────────────────────────────────────────────────
-
 class _SearchBar extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
@@ -165,7 +163,6 @@ class _SearchBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          // Filter button
           Stack(
             clipBehavior: Clip.none,
             children: [
@@ -213,8 +210,6 @@ class _SearchBar extends StatelessWidget {
     );
   }
 }
-
-// ── Body ──────────────────────────────────────────────────────────────────────
 
 class _Body extends StatelessWidget {
   final HomeState state;
@@ -295,8 +290,7 @@ class _Body extends StatelessWidget {
   }
 }
 
-// ── Staggered fade-in wrapper ──────────────────────────────────────────────────
-
+// fade + slide each card in with a small stagger so it doesn't feel like a flash
 class _AnimatedCard extends StatelessWidget {
   final int index;
   final Widget child;

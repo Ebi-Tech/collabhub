@@ -96,8 +96,7 @@ class CollabHubApp extends StatelessWidget {
   }
 }
 
-// ── Auth gate ─────────────────────────────────────────────────────────────────
-
+// decides whether to show the login screen or the main app
 class _AuthGate extends StatelessWidget {
   const _AuthGate();
 

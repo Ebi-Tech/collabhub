@@ -6,7 +6,6 @@ import 'package:collabhub/models/project_model.dart';
 import 'package:collabhub/utils/constants.dart';
 import 'package:collabhub/widgets/skill_badge.dart';
 
-/// Full project card matching the Figma spec.
 class ProjectCard extends StatefulWidget {
   final ProjectModel project;
   final bool isOwner;
@@ -71,8 +70,6 @@ class _ProjectCardState extends State<ProjectCard> {
   }
 }
 
-// ── Card header ───────────────────────────────────────────────────────────────
-
 class _CardHeader extends StatelessWidget {
   final ProjectModel project;
   final bool isOwner;
@@ -89,13 +86,11 @@ class _CardHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Avatar
         _AuthorAvatar(
           initials: project.authorInitials,
           authorId: project.authorId,
         ),
         const SizedBox(width: 10),
-        // Name + role
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,7 +109,6 @@ class _CardHeader extends StatelessWidget {
             ],
           ),
         ),
-        // Voting + menu
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -137,8 +131,6 @@ class _CardHeader extends StatelessWidget {
     );
   }
 }
-
-// ── Avatar ────────────────────────────────────────────────────────────────────
 
 class _AuthorAvatar extends StatelessWidget {
   final String initials;
@@ -176,8 +168,6 @@ class _AuthorAvatar extends StatelessWidget {
     );
   }
 }
-
-// ── Vote button ───────────────────────────────────────────────────────────────
 
 class _VoteButton extends StatelessWidget {
   final ProjectModel project;
@@ -241,8 +231,7 @@ class _VoteButton extends StatelessWidget {
   }
 }
 
-// ── Owner three-dot menu ──────────────────────────────────────────────────────
-
+// only visible to the person who posted the project
 class _OwnerMenu extends StatelessWidget {
   final ProjectModel project;
   final VoidCallback? onEdit;
@@ -354,8 +343,6 @@ class _OwnerMenu extends StatelessWidget {
   }
 }
 
-// ── Project content ───────────────────────────────────────────────────────────
-
 class _ProjectContent extends StatelessWidget {
   final ProjectModel project;
 
@@ -366,7 +353,6 @@ class _ProjectContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Title + status badge
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -384,13 +370,11 @@ class _ProjectContent extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        // Description
         Text(
           project.description,
           style: TextStyle(fontSize: 14, color: AppColors.secondaryText(context), height: 1.5),
         ),
         const SizedBox(height: 12),
-        // Skills
         Wrap(
           spacing: 8,
           runSpacing: 6,
@@ -399,7 +383,6 @@ class _ProjectContent extends StatelessWidget {
               .toList(),
         ),
         const SizedBox(height: 12),
-        // Contact email
         Row(
           children: [
             const Icon(Icons.email_outlined, size: 16, color: AppColors.primary),
@@ -418,8 +401,6 @@ class _ProjectContent extends StatelessWidget {
     );
   }
 }
-
-// ── Status badge ──────────────────────────────────────────────────────────────
 
 class _StatusBadge extends StatelessWidget {
   final bool isOpen;

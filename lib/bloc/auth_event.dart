@@ -6,17 +6,15 @@ abstract class AuthEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Check persisted auth on app start.
+// fired on startup to see if someone is already logged in
 class AuthCheckRequested extends AuthEvent {
   const AuthCheckRequested();
 }
 
-/// Google sign-in.
 class AuthGoogleLoginRequested extends AuthEvent {
   const AuthGoogleLoginRequested();
 }
 
-/// Email/password sign-in.
 class AuthEmailLoginRequested extends AuthEvent {
   final String email;
   final String password;
@@ -25,7 +23,6 @@ class AuthEmailLoginRequested extends AuthEvent {
   List<Object?> get props => [email, password];
 }
 
-/// Email/password registration.
 class AuthEmailRegisterRequested extends AuthEvent {
   final String name;
   final String email;
@@ -39,13 +36,12 @@ class AuthEmailRegisterRequested extends AuthEvent {
   List<Object?> get props => [name, email, password];
 }
 
-/// Update user profile info.
 class AuthProfileUpdateRequested extends AuthEvent {
   final String name;
   final String role;
   final String bio;
   final List<String> skills;
-  final String? avatarLocalPath; // null = no change
+  final String? avatarLocalPath; // null means user didn't pick a new photo
   const AuthProfileUpdateRequested({
     required this.name,
     required this.role,
@@ -57,12 +53,11 @@ class AuthProfileUpdateRequested extends AuthEvent {
   List<Object?> get props => [name, role, bio, skills, avatarLocalPath];
 }
 
-/// Sign out.
 class AuthLogoutRequested extends AuthEvent {
   const AuthLogoutRequested();
 }
 
-/// Clears [AuthUnauthenticated.promptLoginAfterRegistration] after the UI shows it.
+// clears the "please log in" prompt after the snackbar has been shown
 class AuthPostRegistrationAcknowledged extends AuthEvent {
   const AuthPostRegistrationAcknowledged();
 }

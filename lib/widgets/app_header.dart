@@ -2,7 +2,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:collabhub/utils/constants.dart';
 
-/// Sticky app header shown on all authenticated screens.
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   const AppHeader({super.key});
 
@@ -59,9 +58,6 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-// ── Google logo ───────────────────────────────────────────────────────────────
-
-/// Draws the Google "G" logo using a CustomPainter (no SVG package required).
 class GoogleLogoWidget extends StatelessWidget {
   final double size;
   const GoogleLogoWidget({super.key, this.size = 20});

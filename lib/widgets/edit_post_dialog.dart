@@ -6,7 +6,6 @@ import 'package:collabhub/utils/constants.dart';
 import 'package:collabhub/utils/validators.dart';
 import 'package:collabhub/widgets/skill_badge.dart';
 
-/// Full-screen dialog for editing an existing project post.
 class EditPostDialog extends StatefulWidget {
   final ProjectModel project;
 
@@ -82,7 +81,6 @@ class _EditPostDialogState extends State<EditPostDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Header row: centered title + X close button
                 Stack(
                   alignment: Alignment.center,
                   children: [

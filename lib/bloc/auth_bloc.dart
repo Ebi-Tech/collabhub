@@ -73,7 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      // createUserWithEmailAndPassword signs the user in; sign out so they must log in explicitly.
+      // sign them out right after so they have to log in manually
       await _authService.signOut();
       emit(const AuthUnauthenticated(promptLoginAfterRegistration: true));
     } catch (e) {
@@ -109,7 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(updated));
     } catch (e) {
       emit(AuthError(e.toString()));
-      // Restore previous state so the UI doesn't break
+      // roll back to previous user so the profile screen doesn't break
       emit(AuthAuthenticated(currentUser));
     }
   }

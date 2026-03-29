@@ -8,7 +8,6 @@ import 'package:collabhub/screens/profile/profile_screen.dart';
 import 'package:collabhub/utils/constants.dart';
 import 'package:collabhub/widgets/app_header.dart';
 
-/// Root scaffold after login — hosts the three tab screens.
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -47,8 +46,6 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
-
-// ── Bottom navigation bar ─────────────────────────────────────────────────────
 
 class _BottomNav extends StatelessWidget {
   final int currentIndex;

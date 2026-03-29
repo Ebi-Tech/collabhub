@@ -40,7 +40,7 @@ class ProjectModel extends Equatable {
 
   bool get isOpen => status == ProjectStatus.open;
 
-  /// Two-letter initials for the avatar fallback.
+  // fallback when the author has no profile photo
   String get authorInitials {
     final parts = authorName.trim().split(RegExp(r'\s+'));
     if (parts.length >= 2) {
@@ -49,8 +49,7 @@ class ProjectModel extends Equatable {
     return authorName.isNotEmpty ? authorName[0].toUpperCase() : '?';
   }
 
-  /// Deserialise from a Firestore document map.
-  /// [currentUserId] is used to derive [userUpvoted] / [userDownvoted].
+  // currentUserId is needed to figure out how the current user voted
   factory ProjectModel.fromMap(
     String id,
     Map<String, dynamic> data, {
@@ -79,7 +78,7 @@ class ProjectModel extends Equatable {
     );
   }
 
-  /// Serialise to a Firestore-compatible map (does not include [id] or votes).
+  // id and votes are not included — Firestore manages the id, votes live separately
   Map<String, dynamic> toMap() => {
         'title': title,
         'description': description,

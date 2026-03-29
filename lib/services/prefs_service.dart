@@ -1,15 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Wraps SharedPreferences for the three saved user preferences:
-///   1. Dark mode (bool)
-///   2. Last status filter ('all' | 'open' | 'closed')
-///   3. Last sort-by ('recent' | 'upvoted' | 'downvoted')
+// saves the user's theme, filter, and sort preferences locally using SharedPreferences
 class PrefsService {
   static const _kDarkMode = 'dark_mode';
   static const _kStatusFilter = 'status_filter';
   static const _kSortBy = 'sort_by';
 
-  // ── Dark mode ──────────────────────────────────────────────────────────────
 
   Future<bool> getDarkMode() async {
     final p = await SharedPreferences.getInstance();
@@ -21,7 +17,6 @@ class PrefsService {
     await p.setBool(_kDarkMode, isDark);
   }
 
-  // ── Status filter ──────────────────────────────────────────────────────────
 
   Future<String> getStatusFilter() async {
     final p = await SharedPreferences.getInstance();
@@ -33,7 +28,6 @@ class PrefsService {
     await p.setString(_kStatusFilter, filter);
   }
 
-  // ── Sort by ────────────────────────────────────────────────────────────────
 
   Future<String> getSortBy() async {
     final p = await SharedPreferences.getInstance();

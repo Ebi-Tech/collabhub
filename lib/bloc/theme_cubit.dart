@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collabhub/services/prefs_service.dart';
 
-/// Manages ThemeMode (light / dark) and persists the choice via PrefsService.
 class ThemeCubit extends Cubit<ThemeMode> {
   final PrefsService _prefs;
 

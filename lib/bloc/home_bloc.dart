@@ -30,13 +30,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeAddProject>(_onAdd);
   }
 
-  // ── handlers ──────────────────────────────────────────────────────────────
-
   Future<void> _onLoad(HomeLoadProjects event, Emitter<HomeState> emit) async {
     _currentUserId = event.userId;
     emit(const HomeLoading());
     try {
-      // Restore saved filter/sort preferences
+      // pick up whatever filter/sort the user had last time
       final savedFilter = await _prefsService.getStatusFilter();
       final savedSort = await _prefsService.getSortBy();
       final projects = await _firestoreService.getProjects(
@@ -70,7 +68,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onFilter(HomeFilterChanged event, Emitter<HomeState> emit) {
     if (state is! HomeLoaded) return;
     final s = state as HomeLoaded;
-    // Persist the user's chosen filter + sort
+    // save so it's still there when they reopen the app
     _prefsService.saveStatusFilter(event.statusFilter);
     _prefsService.saveSortBy(event.sortBy);
     emit(s.copyWith(
@@ -181,8 +179,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  // ── helpers ───────────────────────────────────────────────────────────────
-
+  // swap out the updated project in both lists and re-emit
   void _replaceAndEmit(ProjectModel project, Emitter<HomeState> emit) {
     final s = state as HomeLoaded;
     final updated = s.allProjects

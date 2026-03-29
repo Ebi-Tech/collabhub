@@ -43,7 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Page header
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -77,7 +76,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  // Profile card
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
@@ -94,10 +92,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )
                         : _ViewProfile(user: user),
                   ),
-                  // My Posts
                   _MyPosts(userId: user.id),
                   const SizedBox(height: 24),
-                  // Dark mode toggle
                   BlocBuilder<ThemeCubit, ThemeMode>(
                     builder: (context, mode) {
                       final isDark = mode == ThemeMode.dark;
@@ -142,7 +138,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                   ),
                   const SizedBox(height: 12),
-                  // Logout
                   OutlinedButton.icon(
                     onPressed: () {
                       context
@@ -171,8 +166,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-// ── View mode ─────────────────────────────────────────────────────────────────
-
 class _ViewProfile extends StatelessWidget {
   final UserModel user;
   const _ViewProfile({required this.user});
@@ -181,7 +174,6 @@ class _ViewProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Avatar
         _BigAvatar(
           initials: user.initials,
           userId: user.id,
@@ -195,10 +187,8 @@ class _ViewProfile extends StatelessWidget {
           style: AppTextStyles.bodySm,
         ),
         const SizedBox(height: 24),
-        // Email
         _infoRow(context, Icons.email_outlined, user.email, isLink: true),
         const SizedBox(height: 20),
-        // Bio
         _section(
           'Bio',
           user.bio.isEmpty
@@ -211,7 +201,6 @@ class _ViewProfile extends StatelessWidget {
                       height: 1.5)),
         ),
         const SizedBox(height: 20),
-        // Skills
         _section(
           'Skills',
           user.skills.isEmpty
@@ -264,8 +253,6 @@ class _ViewProfile extends StatelessWidget {
   }
 }
 
-// ── Edit mode ─────────────────────────────────────────────────────────────────
-
 class _EditForm extends StatefulWidget {
   final UserModel user;
   final VoidCallback onSaved;
@@ -289,7 +276,7 @@ class _EditFormState extends State<_EditForm> {
   late final TextEditingController _bioCtrl;
   final TextEditingController _skillCtrl = TextEditingController();
   late List<String> _skills;
-  String? _avatarLocalPath; // set when user picks a new photo
+  String? _avatarLocalPath;
 
   @override
   void initState() {
@@ -524,14 +511,12 @@ class _EditFormState extends State<_EditForm> {
       );
 }
 
-// ── Big avatar ────────────────────────────────────────────────────────────────
-
 class _BigAvatar extends StatelessWidget {
   final String initials;
   final String userId;
-  final String? avatarUrl;   // remote URL (Google photo / Storage)
-  final String? localPath;   // local file picked but not yet uploaded
-  final VoidCallback? onTap; // non-null = edit mode, shows camera icon
+  final String? avatarUrl;
+  final String? localPath;
+  final VoidCallback? onTap;
 
   const _BigAvatar({
     required this.initials,
@@ -605,8 +590,6 @@ class _BigAvatar extends StatelessWidget {
   }
 }
 
-// ── My Posts ──────────────────────────────────────────────────────────────────
-
 class _MyPosts extends StatelessWidget {
   final String userId;
   const _MyPosts({required this.userId});
@@ -669,7 +652,6 @@ class _PostItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Content
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -716,7 +698,6 @@ class _PostItem extends StatelessWidget {
               ],
             ),
           ),
-          // Three-dot menu
           _PostMenu(project: project, onEdit: onEdit),
         ],
       ),
@@ -749,8 +730,6 @@ class _PostItem extends StatelessWidget {
         ),
       );
 }
-
-// ── Three-dot menu for profile post items ─────────────────────────────────────
 
 class _PostMenu extends StatelessWidget {
   final ProjectModel project;

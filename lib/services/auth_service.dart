@@ -5,22 +5,19 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collabhub/models/user_model.dart';
 
-/// Firebase Auth + Firestore user profile service.
+// Handles all Firebase Auth operations and syncs user data to Firestore
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  // ── Public API ────────────────────────────────────────────────────────────
-
-  /// Returns the currently signed-in user, or null.
+  // check if someone is already logged in (used on app startup)
   Future<UserModel?> getCurrentUser() async {
     final firebaseUser = _auth.currentUser;
     if (firebaseUser == null) return null;
     return _fetchOrCreate(firebaseUser);
   }
 
-  /// Signs in with a Google account.
   Future<UserModel> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
     if (googleUser == null) throw Exception('Sign-in cancelled');
@@ -34,7 +31,6 @@ class AuthService {
     return _fetchOrCreate(userCredential.user!);
   }
 
-  /// Signs in with email and password.
   Future<UserModel> signInWithEmail(String email, String password) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
@@ -47,7 +43,6 @@ class AuthService {
     }
   }
 
-  /// Creates a new account with email and password.
   Future<UserModel> registerWithEmail({
     required String name,
     required String email,
@@ -65,9 +60,7 @@ class AuthService {
     }
   }
 
-  /// Persists updated profile fields to Firestore.
-  /// If [avatarLocalPath] is provided the image is uploaded to Firebase Storage
-  /// and the resulting download URL is saved as [avatarUrl].
+  // saves profile edits to Firestore; uploads avatar to Storage if a new photo was picked
   Future<UserModel> updateProfile({
     required UserModel user,
     required String name,
@@ -99,15 +92,12 @@ class AuthService {
         name: name, role: role, bio: bio, skills: skills, avatarUrl: avatarUrl);
   }
 
-  /// Signs out from Firebase and Google.
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
   }
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
-
-  /// Fetches the Firestore user doc; creates it on first sign-in.
+  // pull user doc from Firestore, or create one if it's their first time
   Future<UserModel> _fetchOrCreate(User firebaseUser, {String? displayName}) async {
     final uid = firebaseUser.uid;
     final docRef = _db.collection('users').doc(uid);

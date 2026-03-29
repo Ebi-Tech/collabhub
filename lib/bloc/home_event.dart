@@ -22,10 +22,7 @@ class HomeSearchChanged extends HomeEvent {
 }
 
 class HomeFilterChanged extends HomeEvent {
-  /// 'all' | 'open' | 'closed'
   final String statusFilter;
-
-  /// 'recent' | 'upvoted' | 'downvoted'
   final String sortBy;
 
   const HomeFilterChanged({required this.statusFilter, required this.sortBy});

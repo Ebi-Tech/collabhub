@@ -1,4 +1,4 @@
-/// Form-field validators used across the app.
+// reusable form validators — returns null if valid, error string if not
 class Validators {
   Validators._();
 

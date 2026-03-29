@@ -4,7 +4,6 @@ import 'package:collabhub/utils/constants.dart';
 enum AppButtonVariant { primary, outline }
 enum AppButtonSize { normal, small }
 
-/// Reusable button that matches the Figma spec.
 class AppButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;

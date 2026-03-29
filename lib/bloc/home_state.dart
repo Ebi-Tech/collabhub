@@ -20,18 +20,16 @@ class HomeLoaded extends HomeState {
   final List<ProjectModel> displayedProjects;
   final String searchQuery;
 
-  /// 'all' | 'open' | 'closed'
+  // 'all' | 'open' | 'closed'
   final String statusFilter;
 
-  /// 'recent' | 'upvoted' | 'downvoted'
+  // 'recent' | 'upvoted' | 'downvoted'
   final String sortBy;
 
-  /// Set to the Firestore-assigned ID after a successful createProject call.
-  /// BlocListeners watch this to show a success snackbar.
+  // set after a post is created so the create screen can show a success snackbar
   final String? lastAddedId;
 
-  /// Non-destructive error from a write operation (create/update/delete/vote).
-  /// Does not replace the loaded state — shown as a snackbar then cleared.
+  // write errors (vote/delete/etc) that shouldn't kick us out of HomeLoaded
   final String? transientError;
 
   const HomeLoaded({
@@ -44,7 +42,7 @@ class HomeLoaded extends HomeState {
     this.transientError,
   });
 
-  // Sentinel lets copyWith explicitly clear nullable fields.
+  // sentinel trick so copyWith can set nullable fields back to null
   static const _unset = Object();
 
   HomeLoaded copyWith({

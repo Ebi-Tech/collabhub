@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:collabhub/utils/constants.dart';
 
-/// Secondary skill chip used on project cards and the profile screen.
+// small chip for displaying a skill tag
 class SkillBadge extends StatelessWidget {
   final String label;
   final VoidCallback? onRemove;

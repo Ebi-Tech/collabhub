@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:collabhub/utils/constants.dart';
 
-/// Slide-in filter panel matching the Figma spec.
 class FilterSheet extends StatefulWidget {
   final String initialStatus;
   final String initialSortBy;

@@ -19,7 +19,7 @@ class UserModel extends Equatable {
     this.avatarUrl,
   });
 
-  /// Two-letter initials for the avatar fallback.
+  // shown in the avatar circle when there's no profile photo
   String get initials {
     final parts = name.trim().split(RegExp(r'\s+'));
     if (parts.length >= 2) {
@@ -28,7 +28,6 @@ class UserModel extends Equatable {
     return name.isNotEmpty ? name[0].toUpperCase() : '?';
   }
 
-  /// Deserialise from a Firestore document map.
   factory UserModel.fromMap(String id, Map<String, dynamic> data) {
     return UserModel(
       id: id,
@@ -41,7 +40,6 @@ class UserModel extends Equatable {
     );
   }
 
-  /// Serialise to a map for Firestore (does not include [id]).
   Map<String, dynamic> toMap() => {
         'name': name,
         'email': email,

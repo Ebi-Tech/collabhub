@@ -112,7 +112,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // Logo
                                 Container(
                                   width: 64,
                                   height: 64,
@@ -148,13 +147,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 32),
-                                // Google button
                                 _GoogleSignInButton(
                                   isLoading: isLoading,
                                   onTap: () => _loginWithGoogle(context),
                                 ),
                                 const SizedBox(height: 16),
-                                // Divider
                                 const Row(
                                   children: [
                                     Expanded(child: Divider(color: AppColors.gray300)),
@@ -171,7 +168,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                                 const SizedBox(height: 16),
-                                // Email form toggle
                                 if (!_showEmailForm)
                                   GestureDetector(
                                     onTap: () =>
@@ -228,7 +224,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  // Bottom footer
                   const Padding(
                     padding: EdgeInsets.all(16),
                     child: Text(
@@ -246,8 +241,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-// ── Google button ─────────────────────────────────────────────────────────────
 
 class _GoogleSignInButton extends StatelessWidget {
   final bool isLoading;
@@ -295,8 +288,6 @@ class _GoogleSignInButton extends StatelessWidget {
     );
   }
 }
-
-// ── Email form ────────────────────────────────────────────────────────────────
 
 class _EmailForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;

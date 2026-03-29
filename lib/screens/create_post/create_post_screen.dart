@@ -27,7 +27,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   void initState() {
     super.initState();
-    // Pre-fill email from auth
     final authState = context.read<AuthBloc>().state;
     if (authState is AuthAuthenticated) {
       _emailCtrl.text = authState.user.email;
@@ -75,7 +74,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
 
     context.read<HomeBloc>().add(HomeAddProject(project));
-    // UI waits — BlocListener below handles success / error
   }
 
   void _resetForm() {
@@ -98,7 +96,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       listenWhen: (prev, curr) {
         if (curr is! HomeLoaded) return false;
         final p = prev is HomeLoaded ? prev : null;
-        // Fire when a new project was just added or a transient error arrived
         final addedChanged = curr.lastAddedId != null &&
             curr.lastAddedId != p?.lastAddedId;
         final errorChanged = curr.transientError != null &&
@@ -252,8 +249,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ),
         ),
       ),
-    ),   // end SingleChildScrollView
-  );     // end BlocListener
+    ),
+  );
   }
 
   Widget _label(String text) =>

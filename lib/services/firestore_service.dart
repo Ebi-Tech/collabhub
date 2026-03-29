@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collabhub/models/project_model.dart';
 
-/// Real Firestore implementation for project CRUD and voting.
+// Handles all Firestore reads/writes for projects
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   CollectionReference<Map<String, dynamic>> get _projects =>
       _db.collection('projects');
 
-  // ── Public API ────────────────────────────────────────────────────────────
-
-  /// Fetches all projects ordered by creation date (newest first).
-  /// [currentUserId] is required to resolve the user's vote state.
+  // load all projects, newest first
   Future<List<ProjectModel>> getProjects({required String currentUserId}) async {
     final snapshot = await _projects
         .orderBy('createdAt', descending: true)
@@ -23,14 +20,13 @@ class FirestoreService {
         .toList();
   }
 
-  /// Creates a new project document and returns it with its assigned [id].
   Future<ProjectModel> createProject(ProjectModel project) async {
     final data = project.toMap();
     final docRef = await _projects.add(data);
     return project.copyWith(id: docRef.id);
   }
 
-  /// Overwrites mutable fields (title, description, skills, contactEmail, status).
+  // only update editable fields, not votes or author info
   Future<ProjectModel> updateProject(ProjectModel project) async {
     await _projects.doc(project.id).update({
       'title': project.title,
@@ -42,16 +38,12 @@ class FirestoreService {
     return project;
   }
 
-  /// Deletes a project document.
   Future<void> deleteProject(String projectId) async {
     await _projects.doc(projectId).delete();
   }
 
-  /// Atomically toggles an upvote or downvote for [userId] on [projectId].
-  ///
-  /// Vote logic (same as mock):
-  /// - Tapping the active vote removes it (toggle off).
-  /// - Switching sides removes the old vote and adds the new one.
+  // uses a transaction so two users voting at the same time don't clobber each other
+  // tapping the same button again removes the vote; switching sides swaps it
   Future<ProjectModel> toggleVote(
     String projectId, {
     required bool isUpvote,
@@ -68,7 +60,7 @@ class FirestoreService {
       int up = (data['upvotes'] as num?)?.toInt() ?? 0;
       int down = (data['downvotes'] as num?)?.toInt() ?? 0;
 
-      final current = votes[userId] as String?; // 'up', 'down', or null
+      final current = votes[userId] as String?;
 
       if (isUpvote) {
         if (current == 'up') {

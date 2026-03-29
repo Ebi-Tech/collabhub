@@ -95,7 +95,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  // Logo
                                   Container(
                                     width: 64,
                                     height: 64,
