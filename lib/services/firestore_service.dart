@@ -19,7 +19,7 @@ class FirestoreService {
             currentUserId: currentUserId))
         .toList();
   }
-
+// create a new project
   Future<ProjectModel> createProject(ProjectModel project) async {
     final data = project.toMap();
     final docRef = await _projects.add(data);
